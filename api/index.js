@@ -3,6 +3,7 @@ const serverless = require('serverless-http');
 const { Octokit } = require('@octokit/rest');
 const cors = require('cors');
 
+const express = require('express');
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
@@ -13,6 +14,7 @@ const REPO_OWNER = process.env.REPO_OWNER;
 const REPO_NAME = process.env.REPO_NAME;
 const BRANCH = process.env.BRANCH || 'main';
 
+const PORT = process.env.PORT || 3000;  // 从环境变量获取端口，默认3000
 // 辅助函数：获取文件 SHA
 async function getFileSha(path) {
   try {
@@ -96,11 +98,9 @@ app.get('/api/file/*', async (req, res) => {
   res.json({ url: rawUrl });
 });
 
-// 启动本地开发服务器（非 Vercel 环境）
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
-}
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on http://0.0.0.0:${PORT}`);
+});
 
 // ... 所有路由、中间件等代码 ...
 
