@@ -102,4 +102,12 @@ if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
 }
 
+// ... 所有路由、中间件等代码 ...
+
+// 在文件最后添加（不要重复定义）
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`API running on http://0.0.0.0:${PORT}`);
+});
+
 module.exports.handler = serverless(app);
